@@ -156,8 +156,13 @@ def descomponer_serie(serie):
     # resultado = seasonal_decompose(...)
     # fig = resultado.plot()
     # ...
-    pass
-
+    from statsmodels.tsa.seasonal import seasonal_decompose
+    resultado = seasonal_decompose(serie, model='additive', period=365)
+    fig = resultado.plot()
+    fig.set_size_inches(12, 8)
+    plt.savefig("output/ej4_descomposicion.png", dpi=150, bbox_inches='tight')
+    plt.show()
+    return resultado
 
 # =============================================================================
 # TAREA 3 — Análisis del residuo (ruido)
