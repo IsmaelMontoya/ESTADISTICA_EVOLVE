@@ -81,17 +81,30 @@ def regresion_lineal_multiple(X_train, y_train, X_test):
 
     # TODO: Paso 1 — Añadir columna de unos a X_train para el intercepto β₀
     # Pista: np.ones((n, 1)) y np.hstack([ones, X_train])
-    X_train_b = None  # ← Reemplaza None con tu implementación
+        # n_train es el número de filas de X_train
+    n_train = X_train.shape[0] 
+        # unos_train es una matriz de unos con el mismo número de filas que X_train y 1 columna
+    unos_train = np.ones((n_train, 1)) 
+        # X_train_b es la matriz de diseño con la columna de unos
+    X_train_b = np.hstack([unos_train, X_train])  # ← Reemplaza None con tu implementación
 
     # TODO: Paso 2 — Calcular los coeficientes β con la fórmula OLS
     # β = (XᵀX)⁻¹ Xᵀy
-    coefs = None  # ← Reemplaza None con tu implementación
+        # Usamos np.linalg.lstsq quee s mas estable que np.linalg.inv para resolver el sistema de ecuaciones lineales sin invertir la matriz
+        # Basicamente nos dice "Dame la mejor línea posible aunque no pase por todos"
+    coefs = np.linalg.lstsq(X_train_b, y_train, rcond=None)[0]  # ← Reemplaza None con tu implementación
 
     # TODO: Paso 3 — Añadir columna de unos a X_test de la misma forma
-    X_test_b = None  # ← Reemplaza None con tu implementación
+    # Es fundamental hacerlo igual que en X_train para que los coeficientes se apliquen correctamente
+        # n_test es el número de filas de X_test
+    n_test = X_test.shape[0]
+        # unos_test es una matriz de unos con el mismo número de filas que X_test y 1 columna
+    unos_test = np.ones((n_test, 1))
+        # X_test_b es la matriz de diseño con la columna de unos
+    X_test_b = np.hstack([unos_test, X_test])  # ← Reemplaza None con tu implementación
 
     # TODO: Paso 4 — Calcular predicciones ŷ = X_test_b · β
-    y_pred = None  # ← Reemplaza None con tu implementación
+    y_pred = X_test_b @ coefs  # ← Reemplaza None con tu implementación
 
     return coefs, y_pred
 
@@ -116,7 +129,7 @@ def calcular_mae(y_real, y_pred):
     float — Valor del MAE
     """
     # TODO: Implementa el MAE sin usar sklearn
-    pass
+    return np.mean(np.abs(y_real - y_pred))
 
 
 def calcular_rmse(y_real, y_pred):
@@ -135,7 +148,7 @@ def calcular_rmse(y_real, y_pred):
     float — Valor del RMSE
     """
     # TODO: Implementa el RMSE sin usar sklearn
-    pass
+    return np.sqrt(np.mean((y_real - y_pred) ** 2))
 
 
 def calcular_r2(y_real, y_pred):
@@ -156,7 +169,12 @@ def calcular_r2(y_real, y_pred):
     float — Valor del R² (entre -∞ y 1; cuanto más cercano a 1, mejor)
     """
     # TODO: Implementa el R² sin usar sklearn
-    pass
+        # ss_res es la suma de los residuos al cuadrado, que mide la variabilidad de los errores del modelo
+    ss_res = np.sum((y_real - y_pred) ** 2)
+        # ss_tot es la suma total de los cuadrados, que mide la variabilidad total de los datos con respecto a su media
+    ss_tot = np.sum((y_real - np.mean(y_real)) ** 2)    
+        # El R² se calcula como 1 menos la proporción de la variabilidad de los errores con respecto a la variabilidad total.
+    return 1 - ss_res / ss_tot
 
 
 # =============================================================================
@@ -182,7 +200,21 @@ def graficar_real_vs_predicho(y_real, y_pred, ruta_salida="output/ej3_prediccion
     #   - Dibuja la línea de referencia perfecta: y = x
     #   - Añade etiquetas a los ejes y título
     #   - Guarda con plt.savefig(ruta_salida, dpi=150, bbox_inches='tight')
-    pass
+        # plt.scatter crea un gráfico de dispersión, donde cada punto representa una observación con su valor real en el eje x y su valor predicho en el eje y. 
+        # El parámetro alpha controla la transparencia de los puntos para mejorar la visualización cuando hay muchos puntos superpuestos.
+    plt.figure(figsize=(8, 6))
+    plt.scatter(y_real, y_pred, alpha=0.6)
+        # Dibuja la línea de referencia perfecta: y = x
+    minimo = min(np.min(y_real), np.min(y_pred))
+    maximo = max(np.max(y_real), np.max(y_pred))
+    plt.plot([minimo, maximo], [minimo, maximo], linestyle="--")
+    plt.xlabel("Valores reales")
+    plt.ylabel("Valores predichos")
+    plt.title("Real vs. Predicho")
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.savefig(ruta_salida, dpi=150, bbox_inches='tight')
+    plt.close()
 
 
 # =============================================================================
