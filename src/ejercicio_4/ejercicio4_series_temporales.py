@@ -199,31 +199,66 @@ def analizar_residuo(residuo):
     - ACF / PACF:
         from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
     """
+
+    import seaborn as sns
+    from scipy.stats import jarque_bera, norm
+    from statsmodels.tsa.stattools import adfuller
+    from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+
     # TODO: Limpia el residuo (elimina NaN al inicio/fin)
-    residuo_limpio = None  # ← residuo.dropna()
+    residuo_limpio = residuo.dropna()  # ← residuo.dropna()
 
     # TODO: Calcula estadísticos básicos
-    media    = None
-    std      = None
-    asimetria = None
-    curtosis  = None
+    media    = residuo_limpio.mean()
+    std      = residuo_limpio.std()
+    asimetria = residuo_limpio.skew()
+    curtosis  = residuo_limpio.kurtosis()
 
+    # Test de normalidad
+    stat, p_valor = jarque_bera(residuo_limpio)
 
     # TODO: Test de estacionariedad (ADF)
-    # from statsmodels.tsa.stattools import adfuller
-    # resultado_adf = adfuller(residuo_limpio)
-    # p_adf = resultado_adf[1]
+    from statsmodels.tsa.stattools import adfuller
+    resultado_adf = adfuller(residuo_limpio)
+    p_adf = resultado_adf[1]
 
     # TODO: Gráfico ACF y PACF del residuo → output/ej4_acf_pacf.png
-    pass
+    fig, axes = plt.subplots(2, 1, figsize=(10, 6))
+
+    plot_acf(residuo_limpio, ax=axes[0])
+    axes[0].set_title("ACF del residuo")
+
+    plot_pacf(residuo_limpio, ax=axes[1])
+    axes[1].set_title("PACF del residuo")
+
+    plt.tight_layout()
+    plt.savefig("output/ej4_acf_pacf.png", dpi=150)
+    plt.close()
 
     # TODO: Histograma del residuo con curva normal superpuesta
     # → output/ej4_histograma_ruido.png
     # Pista: usa scipy.stats.norm.pdf para la curva teórica
-    pass
+    plt.figure(figsize=(8, 5))
+
+    sns.histplot(residuo_limpio, bins=30, stat="density", alpha=0.6)
+
+    x = np.linspace(residuo_limpio.min(), residuo_limpio.max(), 100)
+    plt.plot(x, norm.pdf(x, media, std), linewidth=2)
+
+    plt.title("Histograma del residuo + curva normal")
+    plt.savefig("output/ej4_histograma_ruido.png", dpi=150)
+    plt.close()
 
     # TODO: Guardar estadísticos en output/ej4_analisis.txt
-    pass
+    with open("output/ej4_analisis.txt", "w", encoding="utf-8") as f:
+        f.write("ANÁLISIS DEL RESIDUO\n")
+        f.write("=" * 40 + "\n")
+        f.write(f"Media: {media:.4f}\n")
+        f.write(f"Std: {std:.4f}\n")
+        f.write(f"Asimetría: {asimetria:.4f}\n")
+        f.write(f"Curtosis: {curtosis:.4f}\n")
+        f.write(f"Jarque-Bera p-valor: {p_valor:.4f}\n")
+        f.write(f"ADF p-valor: {p_adf:.4f}\n")
 
 
 # =============================================================================
