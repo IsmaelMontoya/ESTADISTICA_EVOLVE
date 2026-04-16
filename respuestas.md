@@ -90,26 +90,41 @@ Añade aqui tu descripción y analisis:
 
 **Pregunta 3.1** — Explica en tus propias palabras qué hace la fórmula β = (XᵀX)⁻¹ Xᵀy y por qué es necesario añadir una columna de unos a la matriz X.
 
-> _Escribe aquí tu respuesta_
+> Esta formula nos sirve para saber los coeficientes que no esten en la primera columna  que se utilizan para minimizar el error cuadrático del RMSE entre los valores (y) y los valores que predice el modelo.
+Por dentro lo que hace es comparar como hemos dicho los valores que teniamos y los predichos.
+
+> La columna añadida es para poder estimar un primer valor que no cambia (β sub 0) que también se llama intercepto. Sin esta columna el modelo siemp0re tendria que pasar por el origen (QUE ES EL OORIGEN?) , lo que limitaria su cpacidad de ajustar.
 
 **Pregunta 3.2** — Copia aquí los cuatro coeficientes ajustados por tu función y compáralos con los valores de referencia del enunciado.
 
-| Parametro | Valor real | Valor ajustado |
+| Parametro | Valor real| Valor ajustado |
 |-----------|-----------|----------------|
-| β₀        | 5.0       |                |
-| β₁        | 2.0       |                |
-| β₂        | -1.0      |                |
-| β₃        | 0.5       |                |
+| β₀        | 5.0       |    4.864995    |
+| β₁        | 2.0       |    2.063618    |
+| β₂        | -1.0      |   -10117038    |
+| β₃        | 0.5       |    0.438517    |
 
-> _Escribe aquí tu respuesta_
+> Los coeficientes ajustados son muy cercanos a los valores reales, olo que indica que el modelo ha sido caapz de aproxcimar correctamente la relacion entre variables.
+Las pequeñas diferencias se deben al ruido en los dato sy al proceso de esitmacion, lo cual es esperrable en un contexto real.
 
 **Pregunta 3.3** — ¿Qué valores de MAE, RMSE y R² has obtenido? ¿Se aproximan a los de referencia?
 
-> _Escribe aquí tu respuesta_
+> Los valores en test son:
+> MAE = 1.1665
+> RMSE = 1.4612
+> R² = 0.6897
+
+>Estos resultados son coherentes con los valores de referencia, mostrando un buen ajuste del modelo.
+El error es relativamente bajo, lo que indica que las predicciones están cerca de los valores reales.
+El valor de R² (~0.69) indica que el modelo explica aproximadamente el 69% de la variabilidad de los datos, lo cual es razonable teniendo en cuenta la presencia de ruido.
 
 **Pregunta 3.4* — Compara los resultados con la reacción logística anterior para tu dataset y comprueba si el resultado es parecido. Explica qué ha sucedido. 
 
-> _Escribe aquí tu respuesta_
+> Al compararlo con el resultado sacado de sklearn , se observa que sacan resultados similares.
+Ambos se impelmentan con el mismo algoritmo: regresión lineal por mínimos cuadrados.
+Las dieferencias se pueden deber al preprocseamiento, la normalizacion de daatos o la precision numérica en lo calculos.
+En eun ejercicio lo hemops hecho manualmente con numpy y en el otro lo hemos hecho usando sklearn
+
 
 ---
 

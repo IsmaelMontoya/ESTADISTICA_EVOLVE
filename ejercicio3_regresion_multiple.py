@@ -289,7 +289,7 @@ if __name__ == "__main__":
 
     # Fichero de coeficientes
     # Para windows
-    with open("output/ej3_metricas.txt", "w", encoding="utf-8") as f:
+    with open("output/ej3_coeficientes.txt", "w", encoding="utf-8") as f:
     # with open("output/ej3_coeficientes.txt", "w") as f:
         f.write("Regresión Lineal Múltiple — Coeficientes ajustados\n")
         f.write("=" * 50 + "\n")
