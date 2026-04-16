@@ -8,29 +8,49 @@
 ---
 Añade aqui tu descripción y analisis:
 
----
+--- 
 
 **Pregunta 1.1** — ¿De qué fuente proviene el dataset y cuál es la variable objetivo (target)? ¿Por qué tiene sentido hacer regresión sobre ella?
 
-> El dataset utilizado proviende de datos de rendimiento académico de estudiantes, quyue simulan variables relacionadas con su comportamiento y entorno educativo.
-La variable objetivo es GPA, que es la nota del eestudiante. 
-Tiene sentido aplicar regresión sobre esta variable por que es continua y puede explicarse en funciónd e otras variables como el tiempo de estudio, ausencias o apoyo familiar.
+> El dataset utilizado es de un sistema ERP de gestión de ventas, recoge informacion sobre perdido, clientes, productos y envios.
+La variable objetivo es MARGEN_DOLARES, representando el beneficio obtenido en cada venta.
+
+Tiene sentido aplicar regresion a esta variable por que es numerica continmua y depende de multiples factores como el precio del producto, 
+lso descuentos aplicados, la cantidad vendidad o el tipo de transaccion. Esto permite analizar que variables influyen en el margen y predecir su valor en futuras transacciones
 
 **Pregunta 1.2** — ¿Qué distribución tienen las principales variables numéricas y has encontrado outliers? Indica en qué variables y qué has decidido hacer con ellos.
 
-> Las variables numéricas presentan distribuciones variadas. 
-El tiempo de estudio semanal muestra una distribución aproximadamente normal, mientras que las ausencias presentan una mayor dispersión y posible asimetría. 
-En algunas variables se detectan outliers, especialmente en las ausencias, donde algunos estudiantes presentan valores muy elevados respecto al resto. 
-En este análisis no se han eliminado los outliers, ya que pueden representar casos reales de comportamiento extremo y no necesariamente errores en los datos.
+> Las variables numericas presentan distribuciones asimetricas, en particular la variable objetivo MARGEN_DOLARES muestra la asimetria fuerte hacia la izquierda(asimetria negativa), 
+con una concentracion de valores cercanos a cero y una cola larga hacia valores negativos, que indica numerosas ventas con perdidas significativas.
+![alt text](image.png)
+
+> En cuanto a los outliers, se detectaron principalmente en variables relacionadas con el margen y los descuentos
+> - MARGEN_DOLARES (~10.5% de outliers)
+> - MARGEN_PORCENTAJE (~9.6%)
+> - DESCUENTO (~4.38%)
+Se identificaron mediante el metodo del rango intercuartilico -> IQR
+![alt text](image-1.png)
+
+> No se eliminaron los valores atípicos, ya que representan situaciones reales del negocio (por ejemplo, ventas con grandes descuentos o pérdidas), 
+por lo que forman parte de la variabilidad natural del dataset.
+
 
 
 **Pregunta 1.3** — ¿Qué tres variables numéricas tienen mayor correlación (en valor absoluto) con la variable objetivo? Indica los coeficientes.
 
-> _Escribe aquí tu respuesta_
+> Las tres variable snuméricas con mayor correlación (en valor absoluto) respecto a la variable objetivo MARGEN_DOLARES son:
+> - MARGEN_PORCENTAJE → 0.865
+> - PRECIO_TOTAL_CON_DESCUENTO → 0.118
+> - PRECIO_TOTAL_SIN_DESCUENTO → 0.116
+![alt text](image-2.png)
+
+> La alta correlación con el margen porcentual indica que el beneficio en terminos absolutos esta fuertemente relacionado con el porcentaje de margen aplicado en cada venta.
+> Las otras dos variables presentan correlaciones más bajas, lo que sugiere una relación más débil con el margen.
 
 **Pregunta 1.4** — ¿Hay valores nulos en el dataset? ¿Qué porcentaje representan y cómo los has tratado?
 
-> _Escribe aquí tu respuesta_
+> No se han detectado valores nulos en el dataset, ya que todas las variables presentan un 0% de valores faltantes.
+Por lo tanto, no ha sido necesario aplicar técnicas de imputación ni eliminación de datos, lo que facilita el análisis y garantiza la integridad de la información.
 
 ---
 
